@@ -19,6 +19,7 @@ public class SimpleController {
 
 
     @GetMapping("/requestParam")
+    //@RequestParam:content-type: application/x-www-form-urlencoded
     public String requestParam(@RequestParam(value = "name", required = false, defaultValue = "default-name") final String name,
                                @RequestParam(value = "total", required = false, defaultValue = "-1") final Integer total,
                                @RequestParam(value = "money", required = false, defaultValue = "-1.11") final BigDecimal money,
@@ -39,6 +40,7 @@ public class SimpleController {
     @PostMapping(value = "/requestBody", consumes = {"application/json"}, produces = {"application/json"})
     //consumes = "application/json":方法仅处理request Content-Type为“application/json”类型的请求
     //produces = "application/json":方法仅处理request请求中Accept头中包含了"application/json"的请求
+    //
     public String requestBody(@RequestBody final SimpleJson person)  {
         //return new ObjectMapper().writeValueAsString(person);
         return person.toString();
@@ -46,7 +48,7 @@ public class SimpleController {
 
 
     @RequestMapping(value = "/requestFromLegalWebSite", headers = "Referer=http://www.ifeng.com/*", params = "a=b")
-    //headers = "Referer=http://www.ifeng.com/*": 仅处理request的header中包含了指定“Refer”请求头和对应值为“http://www.ifeng.com/”的请求(支持通配符)
+    //headers = "Referer=http://www.ifeng.com/*": 仅处理request的header中包含了指定“Refer”请求头和对应值为“http://www.ifeng.com/”的请求(支持通配符!!!)
     //params = "a=b":仅处理GET请求中包含了名为“a”，值为“b”的请求
     public String requestFromLegalWebSite() {
         return "success";
