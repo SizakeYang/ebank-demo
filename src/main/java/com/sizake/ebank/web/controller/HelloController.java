@@ -11,10 +11,10 @@ public class HelloController {
         return "hello";
     }
 
-    @RequestMapping()  //-->http://localhost:8080/ebank/xxxx -->and other any unmapping url
-    public String test0(){
-        return "no mapping";
-    }
+//    @RequestMapping()  //-->http://localhost:8080/ebank/xxxx -->and other any unmapping url --> why:the details can be seen in the DispatcherServlet.getHandler
+//    public String test0(){
+//        return "no mapping";
+//    }
 
     @RequestMapping("/") //http://localhost:8080/ebank/
     public String test1(){
