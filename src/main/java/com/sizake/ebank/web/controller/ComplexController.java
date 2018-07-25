@@ -23,6 +23,7 @@ public class ComplexController {
 
     @RequestMapping("/mapFromArray")
     //对于query string放在报文体的情况,请求报文头header需要有 content-type: application/x-www-form-urlencoded,不然的话无法获取query string
+    //application/x-www-form-urlencoded:请求body中按照 key1=value1&key2=value2 进行编码,key和value都要进行urlEncode
     public String mapFromArray(@RequestParam Map<String,String> context) {
         return context.toString();
     }
