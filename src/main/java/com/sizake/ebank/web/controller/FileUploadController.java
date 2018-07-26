@@ -41,6 +41,7 @@ public class FileUploadController {
             // 文件上传前跟客户端对其进行签名,服务端进行验签
             final Long file_size = file.getSize();
 
+            //对上传的文件路径设置:(1)固定前缀;(2)过滤非法字符(如"//",".."等)
             try (final BufferedOutputStream out = new BufferedOutputStream(
                     new FileOutputStream(new File("D:\\test\\" + file.getOriginalFilename())))) {
 
