@@ -3,11 +3,11 @@ package com.sizake.ebank.web.controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController
+@RestController //等价于@Controller+@ResponseBody
 public class HelloController {
 
     @RequestMapping("/hello")
-    public String hello(){
+    public String hello() {
         return "hello";
     }
 
@@ -17,7 +17,7 @@ public class HelloController {
 //    }
 
     @RequestMapping("/") //http://localhost:8080/ebank/
-    public String test1(){
+    public String test1() {
         return "to the ebank root";
     }
 
