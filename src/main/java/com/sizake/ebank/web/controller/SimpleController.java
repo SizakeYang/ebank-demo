@@ -47,8 +47,12 @@ public class SimpleController {
     }
 
 
-    @RequestMapping(value = "/requestFromLegalWebSite", headers = "Referer=http://www.ifeng.com/*", params = "a=b")
+    @RequestMapping(value = "/requestFromLegalWebSite", headers = {"Referer=http://www.ifeng.com/*","Content-type=text/plain", "Content-type=text/html"}, params = "a=b")
     //headers = "Referer=http://www.ifeng.com/*": 仅处理request的header中包含了指定“Refer”请求头和对应值为“http://www.ifeng.com/”的请求(支持通配符!!!)
+    //http header 中的 Content-type 归 ConsumesRequestCondition 管,采用的是 或 条件匹配
+    //http header 中的 Accept 归 ProducesRequestCondition 管,采用的是 或 条件匹配
+    //剩下的http header是归 HeadersRequestCondition 管,采用的是 且 条件匹配
+    // 详情请看 对应类的 parseExpressions
     //params = "a=b":仅处理GET请求中包含了名为“a”，值为“b”的请求
     public String requestFromLegalWebSite() {
         return "success";
