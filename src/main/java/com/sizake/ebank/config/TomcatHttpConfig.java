@@ -44,11 +44,12 @@ public class TomcatHttpConfig {
             }
         };
         //添加连接配置，主要是http的配置信息.
-        tomcat.addAdditionalTomcatConnectors(this.initiateHttpConnector());
+        //tomcat.addAdditionalTomcatConnectors(this.initiateHttpConnector());
 
-        //Tomcat large file upload connection reset
+
         tomcat.addConnectorCustomizers((TomcatConnectorCustomizer) connector -> {
             if ((connector.getProtocolHandler() instanceof AbstractHttp11Protocol<?>)) {
+                //Tomcat large file upload connection reset
                 //-1 means unlimited
                 ((AbstractHttp11Protocol<?>) connector.getProtocolHandler()).setMaxSwallowSize(-1);
             }
