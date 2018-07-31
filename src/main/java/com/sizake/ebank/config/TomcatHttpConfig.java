@@ -44,7 +44,7 @@ public class TomcatHttpConfig {
             }
         };
         //添加连接配置，主要是http的配置信息.
-        //tomcat.addAdditionalTomcatConnectors(this.initiateHttpConnector());
+        tomcat.addAdditionalTomcatConnectors(this.initiateHttpConnector());
 
 
         tomcat.addConnectorCustomizers((TomcatConnectorCustomizer) connector -> {
