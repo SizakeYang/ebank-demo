@@ -48,11 +48,16 @@ public class TomcatHttpConfig {
 
 
         tomcat.addConnectorCustomizers((TomcatConnectorCustomizer) connector -> {
+
+//            //to http2,jdk9+tomcat9
+//            connector.addUpgradeProtocol(new Http2Protocol());
+
             if ((connector.getProtocolHandler() instanceof AbstractHttp11Protocol<?>)) {
                 //Tomcat large file upload connection reset
                 //-1 means unlimited
                 ((AbstractHttp11Protocol<?>) connector.getProtocolHandler()).setMaxSwallowSize(-1);
             }
+
         });
 
         return tomcat;
@@ -69,4 +74,6 @@ public class TomcatHttpConfig {
         connector.setRedirectPort(this.httpsPort);// http 302
         return connector;
     }
+
+
 }
