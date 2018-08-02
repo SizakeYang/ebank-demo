@@ -130,6 +130,9 @@ public class ValidObject {
 
     //自定义[校验注解]需要:
     // 1:自定义一个 @interface,必须要有的属性为 message、groups、payload
+    // message:校验不通过时显示的信息
+    // group:校验是否执行的分组
+    // payload:附带信息
     // 2:实现 ConstraintValidator 接口
 
 
