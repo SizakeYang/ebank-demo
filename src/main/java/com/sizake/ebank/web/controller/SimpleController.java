@@ -20,6 +20,7 @@ public class SimpleController {
 
     @GetMapping("/requestParam")
     //@RequestParam:content-type: application/x-www-form-urlencoded
+    //@RequestParam:a=1&b=2&c=3
     public String requestParam(@RequestParam(value = "name", required = false, defaultValue = "default-name") final String name,
                                @RequestParam(value = "total", required = false, defaultValue = "-1") final Integer total,
                                @RequestParam(value = "money", required = false, defaultValue = "-1.11") final BigDecimal money,
