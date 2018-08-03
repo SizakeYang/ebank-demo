@@ -43,7 +43,21 @@ public class PatternTest {
 
         final Set<ConstraintViolation<PatternObject>> set = this.validator.validate(author); // validate(T object, Class<?>... groups)
         for (final ConstraintViolation<PatternObject> c : set) {
-            System.out.println("result:"+c.toString());
+            c.getConstraintDescriptor().getPayload();
+            System.out.println("result:" + c.toString());
+
+//            Set<Class<? extends Payload>> payloads =
+//                    c.getConstraintDescriptor().getPayload();
+//            for (Class<? extends Payload> payload : payloads) {
+//                if (payload == Severity.Error.class) {
+//                    severeError = true;
+//                    System.out.println("Error: " + c.getPropertyPath() + " " +
+//                            c.getMessage());
+//                } else if (payload == Severity.Info.class) {
+//                    System.out.println("Info: " + violation.getPropertyPath() + " " +
+//                            c.getMessage());
+//                }
+//            }
         }
     }
 
