@@ -6,6 +6,7 @@ import org.apache.coyote.http11.AbstractHttp11Protocol;
 import org.apache.tomcat.util.descriptor.web.SecurityCollection;
 import org.apache.tomcat.util.descriptor.web.SecurityConstraint;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.embedded.EmbeddedServletContainerFactory;
 import org.springframework.boot.context.embedded.tomcat.TomcatConnectorCustomizer;
 import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainerFactory;
@@ -13,7 +14,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-//@ConditionalOnProperty(value = "xxx.yyy.enabled", matchIfMissing = true) //-->当xxx.yyy.enabled 为true时以下配置才生效
+@ConditionalOnProperty(value = "xxx.yyy.enabled", matchIfMissing = true) //-->当xxx.yyy.enabled 为true时以下配置才生效
 public class TomcatHttpConfig {
 
     @Value("${from.server.http.port}")
@@ -24,8 +25,6 @@ public class TomcatHttpConfig {
 
     /**
      * 配置内置的servlet容器工厂为tomcat.
-     *
-     * @return
      */
     @Bean
     public EmbeddedServletContainerFactory servletContainer() {
