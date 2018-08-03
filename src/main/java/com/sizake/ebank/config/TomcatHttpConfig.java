@@ -13,6 +13,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
+//@ConditionalOnProperty(value = "xxx.yyy.enabled", matchIfMissing = true) //-->当xxx.yyy.enabled 为true时以下配置才生效
 public class TomcatHttpConfig {
 
     @Value("${from.server.http.port}")
@@ -74,6 +75,8 @@ public class TomcatHttpConfig {
         connector.setRedirectPort(this.httpsPort);// http 302
         return connector;
     }
+
+
 
 
 }
