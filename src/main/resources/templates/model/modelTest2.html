@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Page one</title>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
+<body>
+<h2>Model2</h2>
+
+<p th:text="'Message of the day: ' + ${motd}" />
+<p th:text="'Message of the number: ' + ${number}" />
+<p th:text="'Message of the obj1.age: ' + ${json1.age}" />
+<p th:text="'Message of the obj2.age: ' + ${json2.age}" />
+<p th:text="'Message of the attribute: ' + ${attributeName}" />
+
+
+</body>
+</html>
