@@ -12,7 +12,7 @@ import java.nio.file.Paths;
 public class GzipController {
 
 
-    // see the difference when Accept-Encoding: gzip is added
+    // see the difference when http's header: {Accept-Encoding: gzip} is added
     @RequestMapping(value = "/getLargeJson", produces = "application/json")
     public String getLargeJson() throws IOException {
         return new String(Files.readAllBytes(Paths.get("D:/temp/huge.json")));
