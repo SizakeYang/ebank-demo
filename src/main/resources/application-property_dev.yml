@@ -1,0 +1,7 @@
+base:
+    module:
+        simpleList: 1,2,3,4,5,6
+test:
+    msg: Hello World Springboot!
+web:
+    author: sizake

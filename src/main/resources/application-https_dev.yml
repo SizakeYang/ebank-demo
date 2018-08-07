@@ -1,0 +1,11 @@
+from:
+    server:
+        http:
+            port: 8081
+server:
+    port: 8080
+    ssl:
+        key-store: classpath:keys/myFirstKeystore
+        key-store-password: 123456
+        keyAlias: sizake
+        keyStoreType: JKS

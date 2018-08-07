@@ -1,0 +1,14 @@
+debug: info
+logging:
+    level:
+        root: info
+server:
+    display-name: ebank-display
+spring:
+    application:
+        name: ebank-application
+    mvc:
+        favicon:
+            enabled: false
+    profiles:
+        active: dev

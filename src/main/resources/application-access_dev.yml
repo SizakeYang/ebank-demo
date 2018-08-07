@@ -1,0 +1,9 @@
+server:
+    tomcat:
+        accesslog:
+            directory: web-access
+            enabled: true
+            pattern: combined
+            prefix: ebank-access
+            suffix: .log
+        basedir: D:\temp
