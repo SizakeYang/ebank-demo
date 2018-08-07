@@ -70,8 +70,7 @@ public class FileDownloadController {
         response.setHeader(headerKey, headerValue);
 
         // Copy the stream to the response's output stream.
-        try {
-            final InputStream is = new FileInputStream(fullPath);
+        try(final InputStream is = new FileInputStream(fullPath)) {
             IOUtils.copy(is, response.getOutputStream());
             response.flushBuffer();
         } catch (final IOException e) {
