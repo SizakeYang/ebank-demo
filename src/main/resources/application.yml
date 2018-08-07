@@ -1,14 +1,26 @@
+# 假定模式为单机-内置tomcat容器
+
+#simple log config for console
 debug: info
 logging:
     level:
         root: info
+
 server:
     display-name: ebank-display
 spring:
     application:
         name: ebank-application
+    # 禁用默认的小叶子
     mvc:
         favicon:
             enabled: false
     profiles:
         active: dev
+
+# 默认的页面加载路径是 src/main/resources/templates
+# 如果放到其它目录需在配置文件指定
+# 举例:spring.thymeleaf.prefix=classpath:/views/
+
+
+

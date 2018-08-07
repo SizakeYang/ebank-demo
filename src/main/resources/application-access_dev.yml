@@ -1,9 +1,47 @@
+#如果有前置nginx的话则应在nginx记录
 server:
     tomcat:
         accesslog:
+            #设定log的目录,默认: logs
             directory: web-access
             enabled: true
             pattern: combined
+            #设定Log文件的前缀,默认:access_log
             prefix: ebank-access
+            #设定Log文件的后缀,默认:.log
             suffix: .log
+        #设定Tomcat的base目录,如果没有指定则使用临时目录
         basedir: D:\temp
+
+
+#    %a – 远程主机的IP (Remote IP address)
+#    %A – 本机IP (Local IP address)
+#    %b – 发送字节数，不包含HTTP头，0字节则显示 ‘-’ (Bytes sent, excluding HTTP headers, or ‘-’ if no bytes
+#    were sent)
+#    %B – 发送字节数，不包含HTTP头 (Bytes sent, excluding HTTP headers)
+#    %h – 远程主机名 (Remote host name)
+#    %H – 请求的具体协议，HTTP/1.0 或 HTTP/1.1 (Request protocol)
+#    %l – 远程用户名，始终为 ‘-’ (Remote logical username from identd (always returns ‘-’))
+#    %m – 请求方式，GET, POST, PUT (Request method)
+#    %p – 本机端口 (Local port)
+#    %q – 查询串 (Query string (prepended with a ‘?’ if it exists, otherwise
+#    an empty string)
+#    %r – HTTP请求中的第一行 (First line of the request)
+#    %s – HTTP状态码 (HTTP status code of the response)
+#    %S – 用户会话ID (User session ID)
+#    %t – 访问日期和时间 (Date and time, in Common Log Format format)
+#    %u – 已经验证的远程用户 (Remote user that was authenticated
+#    %U – 请求的URL路径 (Requested URL path)
+#    %v – 本地服务器名 (Local server name)
+#    %D – 处理请求所耗费的毫秒数 (Time taken to process the request, in millis)
+#    %T – 处理请求所耗费的秒数 (Time taken to process the request, in seconds)
+#    你可以用以上的任意组合来定制你的访问日志格式，也可以用下面两个别名common和combined来指定常用的日志格式:
+#    common – %h %l %u %t "%r" %s %b
+#    combined -
+#    %h %l %u %t "%r" %s %b "%{Referer}i" "%{User-Agent}i"
+#    另外你还可以将cookie, 客户端请求中带的HTTP头(incoming header), 会话(session)或是ServletRequest中的数据都写到Tomcat的访问日志中，你可以用下面的语法来引用。
+#
+#    %{xxx}i – 记录客户端请求中带的HTTP头xxx(incoming headers)
+#    %{xxx}c – 记录特定的cookie xxx
+#    %{xxx}r – 记录ServletRequest中的xxx属性(attribute)
+#    %{xxx}s – 记录HttpSession中的xxx属性(attribute)

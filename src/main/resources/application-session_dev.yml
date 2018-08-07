@@ -1,8 +1,36 @@
 server:
     session:
         cookie:
+            #domain 参数是用来控制 cookie对「哪个域」有效，默认为设置 cookie的那个域。
+            # 这个值可以包含子域，也可以不包含它。
+            # 如上图的例子，Domain选项中，可以是".google.com.hk"(不包含子域,表示它对google.com.hk的所有子域都有效)，也可以是"www.google.com.hk"(包含子域)。
             domain: 127.0.0.1
+            #Cookies 只在https协议下获取,也就是说无法通过js:<script>alert(document.cookie)</script> 获取Cookies
             http-only: true
             name: justforebankdemo
+            #经过式样,只能设置成/ebank及其父目录下
+            # path用来控制cookie发送的指定域的「路径」，默认为"/"，表示指定域下的所有路径都能访问。
+            # 它是在域名的基础下，指定可以访问的路径。
+            # 例如cookie设置为"domain=.google.com.hk; path=/webhp"，那么只有".google.com.hk/webhp"及"/webhp"下的任一子目录如"/webhp/aaa"或"/webhp/bbb"会发送cookie信息，而".google.com.hk"就不会发送，即使它们来自同一个域。
             path: /
+            #Cookies 只在https协议下传输
             secure: true
+
+
+#第一次登陆,设置Session后返回头包含如下(例子)
+#Set-Cookie: JSESSIONID=53B3DB87425E2C44D4A10E09D8AF53C4; Path=/ebank; Secure; HttpOnly
+#一个set-Cookie字段只能设置一个cookie，当你要想设置多个 cookie，需要添加同样多的set-Cookie字段。
+
+#从第二次访问到Cookies有效期结束前,请求头会包含如下(例子)
+#Cookie: JSESSIONID=53B3DB87425E2C44D4A10E09D8AF53C4
+
+
+#什么时候 cookie 会被覆盖：name/domain/path 这3个字段都相同的时候
+# 以下配置后
+#第一次登陆,设置Session后返回头包含如下(例子)
+#Set-Cookie: justforebankdemo=C9B67ED5223E3B37707838DA28B133F1; Domain=127.0.0.1; Path=/; Secure; HttpOnly
+
+#从第二次访问到Cookies有效期结束前,请求头会包含如下(例子)
+#Cookie: justforebankdemo=9F62D45EC3E82E5BAA2AD937D8CB08B9
+
+

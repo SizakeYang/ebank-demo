@@ -1,2 +1,8 @@
 server:
     contextPath: /ebank
+
+
+
+# http://ip:port/ebank/demo/xxx
+# server.servlet-path=/demo
+# server.context-parameters.[param name]设置servlet context 参数

@@ -2,5 +2,16 @@ server:
     compression:
         enabled: true
         excluded-user-agents: text/html,text/xml,text/plain,text/css
-        mime-types: application/json,application/xml,
+        mime-types: application/json,application/xml
+        # byte
         min-response-size: 256
+
+# 以上内容，详见 org.springframework.boot.context.embedded.Compression 以及 org.springframework.boot.autoconfigure.web.ServerProperties
+
+# 除了以上设置之外,http请求头需要有{Accept-Encoding: gzip};-->详情请看 Http11Processor.useCompression
+
+# if ((acceptEncodingMB == null)
+# || (acceptEncodingMB.indexOf("gzip") == -1)) {
+#    return false;
+# }
+

@@ -1,3 +1,4 @@
+#自用
 from:
     server:
         http:
@@ -9,3 +10,61 @@ server:
         key-store-password: 123456
         keyAlias: sizake
         keyStoreType: JKS
+
+# 在没有server.ssl.trust-store 为单向认证
+
+#server.ssl.trust-store=classpath:keys/trustore.p12
+#server.ssl.trust-store-password=123456
+#If clientAuth is set to want, client certificates are validated if presented to the server, but are not required.
+#server.ssl.client-auth=need
+
+
+# xxx.yyy.enabled=false
+
+# 生成一个含有一个私钥的keystore文件
+
+#-genkey ：生成key；
+#
+#-alias ：key的别名；
+#
+#-dname：指定证书拥有者信息
+#
+#-storetype ：密钥库的类型为JCEKS。常用的有JKS(默认),JCEKS(推荐),PKCS12,BKS,UBER。每个密钥库只可以是其中一种类型。
+#
+#-keyalg ：DSA或RSA算法(当使用-genkeypair参数)，DES或DESede或AES算法(当使用-genseckey参数)；
+#
+#-keysize ：密钥的长度为512至1024之间(64的倍数)
+#
+#-keystore ：证书库的名称
+#
+#-validity ： 指定创建的证书有效期多少天
+#
+#dname的值详解：
+#
+#CN(Common Name名字与姓氏)
+#
+#OU(Organization Unit组织单位名称)
+#
+#O(Organization组织名称)
+#
+#L(Locality城市或区域名称)
+#
+#ST(State州或省份名称)
+#
+#C(Country国家名称）
+
+# keytool -genkey -alias certificatekey  -dname "CN=Andy,OU=kfit,O=kfit,L=HaiDian,ST=BeiJing,C=CN" -storetype PKCS12 -keyalg RSA -keysize 2048 -keystore keystore.p12 -validity 365
+
+
+# 验证新生成的keystore文件
+# keytool -list -v -keystore keystore.p12
+
+# 如果需要双向认证,则进行以下步骤 --> 生成trust store
+# 导出【自我签署】的凭证文件
+# keytool -export -alias certificatekey -keystore keystore.jks -rfc -file selfsignedcert.cer
+
+# 把认凭证件导入到truststore文件
+# keytool -import -alias certificatekey -file selfsignedcert.cer  -keystore truststore.jks
+
+# 验证新创建的truststore文件
+# keytool -list -v -keystore truststore.jks
