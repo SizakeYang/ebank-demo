@@ -1,10 +1,9 @@
 # 假定模式为单机-内置tomcat容器
 
 #simple log config for console
-debug: info
 logging:
     level:
-        root: info
+        root: debug
 
 server:
     display-name: ebank-display

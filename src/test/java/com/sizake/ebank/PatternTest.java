@@ -37,7 +37,7 @@ public class PatternTest {
     }
 
     @Test
-    public void testKindsOfErrors() {
+    public void kindsOfErrors() {
         final PatternObject author = new PatternObject();
         author.setStr("/asd/asd////asd");
 
