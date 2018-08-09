@@ -12,7 +12,14 @@ public interface CityMapper {
 
     @Select("select * from world.city")
     @MapKey("id")
-        //单一主键
-    Map<String, City> getAll();//只能是Map<String/Integer/Object, City>,不能是Map<String/Integer/Object, Object>
+//单一主键;小写有区别,此处只能用"id",即与对象City.id 一致
+    Map<String, City> getAllAndReturnMapObj();
+
+
+    @Select("select id,name,countryCode,district,population from world.city")
+    @MapKey("id")
+//单一主键;大小写有区别,此处只能用"id",即与查询语句 select id ...... 一致
+    Map<String, Map<String, String>> getAllAndReturnListMap();
+
 
 }
