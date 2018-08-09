@@ -21,5 +21,7 @@ public interface CityMapper {
 //单一主键;大小写有区别,此处只能用"id",即与查询语句 select id ...... 一致
     Map<String, Map<String, String>> getAllAndReturnListMap();
 
+    //联合主键-->way1:get List<Map> and transform it to Map
+
 
 }
