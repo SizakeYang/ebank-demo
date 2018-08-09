@@ -1,7 +1,6 @@
 package com.sizake.ebank.db.dao;
 
 import com.sizake.ebank.web.jsonObject.Language;
-import org.apache.ibatis.annotations.MapKey;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -22,12 +21,19 @@ public interface LanguageMapper {
     @Select("SELECT * FROM world.countrylanguage l WHERE l.CountryCode  = #{country} ")
     List<Map<String, String>> findByMapAndReturnListMap1(Map<String, Object> paramMap);
 
-    @Select("SELECT * FROM world.countrylanguage l WHERE l.CountryCode  = #{country} ")
-    @MapKey("CountryCode")
-    Map<String,Map<String, String>> findByMapAndReturnMultiMap1(Map<String, Object> paramMap);
-
-
     @Select("SELECT * FROM world.countrylanguage l WHERE l.CountryCode  = #{countryCode} and l.language = #{language}")
     Language findByObjAndReturnObj(Language l);
+
+
+    @Select({"<script>",
+            "SELECT * FROM world.countrylanguage l",
+            "WHERE 1=1",
+            "<when test='title!=null'>",
+            "AND l.CountryCode  = #{country}",
+            "</when>",
+            "</script>"})
+    List<Map<String, String>> findByScript(Map<String, Object> paramMap);
+
+
 
 }

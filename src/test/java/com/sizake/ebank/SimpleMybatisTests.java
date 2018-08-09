@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RunWith(SpringRunner.class)
@@ -29,22 +30,24 @@ public class SimpleMybatisTests {
         final Map<String, Object> conditions = new HashMap<>();
         conditions.put("country", "ABW");
         conditions.put("language", "Dutch");
+        conditions.put("title","");
 //        System.out.println(String.format("language-map is %s ", this.languageMapper.findByMapAndReturnMap(conditions)));
 //        final List<Map<String, String>> language_list1 = this.languageMapper.findByMapAndReturnListMap1(conditions);
 //        System.out.println(String.format("language-list map1 is %s ", language_list1));
 //        System.out.println(String.format("language-list map1's size is %s ", language_list1.size()));
-//
-//
+
+         List<Map<String, String>> language_list2 = this.languageMapper.findByScript(conditions);
+         System.out.println(String.format("language-list map1 is %s ", language_list2));
+         System.out.println(String.format("language-list map1's size is %s ", language_list2.size()));
+
+
 //        final Language language = new Language();
 //        language.setCountryCode("ABW");
 //        language.setLanguage("Dutch");
 //
 //        System.out.println(String.format("language-obj is %s ", this.languageMapper.findByObjAndReturnObj(language)));
-//
 
 
-        Map<String,Map<String, String>> language_multi1 = this.languageMapper.findByMapAndReturnMultiMap1(conditions);
-        System.out.println(String.format("language-multi1 is %s ",language_multi1));
 
 
 
