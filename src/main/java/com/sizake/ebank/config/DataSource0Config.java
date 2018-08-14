@@ -2,6 +2,7 @@ package com.sizake.ebank.config;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -38,13 +39,26 @@ public class DataSource0Config {
     @Bean(name = "ebankTransactionManager0")
     @Primary
     public DataSourceTransactionManager transactionManager(@Qualifier("ebankDataSource0") final DataSource dataSource) {
+        //在单一的JDBC/Mybatis DataSource中管理事务;对于涉及到多数据源操作的服务无法保证事务!!!
         return new DataSourceTransactionManager(dataSource);
     }
 
     @Bean(name = "ebankSqlSessionTemplate0")
     @Primary
     public SqlSessionTemplate sqlSessionTemplate(@Qualifier("ebankSqlSessionFactory0") final SqlSessionFactory sqlSessionFactory) {
-        return new SqlSessionTemplate(sqlSessionFactory);
+        // 它重用的是Statement对象，它会在内部利用一个Map把创建的Statement都缓存起来，
+        // 每次在执行一条SQL语句时，它都会去判断之前是否存在基于该SQL缓存的Statement对象，
+        // 存在而且之前缓存的Statement对象对应的Connection还没有关闭的时候就继续用之前的Statement对象，
+        // 否则将创建一个新的Statement对象，并将其缓存起来。
+        // 因为Executor对象随着SqlSession的创建而创建，被保存在SqlSession对象中，因此Executor的生命周期与SqlSession一致。
+        // 所以我们缓存在ReuseExecutor上的Statement的作用域是同一个SqlSession
+        return new SqlSessionTemplate(sqlSessionFactory, ExecutorType.REUSE);
+        //others:
+        // BatchExecutor的doUpdate更新操作是批量执行，
+        // 每一次更新操作保存在内部的statementList中，
+        // 每调用一次flushStatements()进行一次批量执行。
+        // commit时会调用flushStatements()，
+        // 查询操作时也会调用flushStatements()。
     }
 
 
