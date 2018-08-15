@@ -46,19 +46,23 @@ public class DataSource0Config {
     @Bean(name = "ebankSqlSessionTemplate0")
     @Primary
     public SqlSessionTemplate sqlSessionTemplate(@Qualifier("ebankSqlSessionFactory0") final SqlSessionFactory sqlSessionFactory) {
+
+        return new SqlSessionTemplate(sqlSessionFactory, ExecutorType.SIMPLE);
+        // reuse:
         // 它重用的是Statement对象，它会在内部利用一个Map把创建的Statement都缓存起来，
         // 每次在执行一条SQL语句时，它都会去判断之前是否存在基于该SQL缓存的Statement对象，
         // 存在而且之前缓存的Statement对象对应的Connection还没有关闭的时候就继续用之前的Statement对象，
         // 否则将创建一个新的Statement对象，并将其缓存起来。
         // 因为Executor对象随着SqlSession的创建而创建，被保存在SqlSession对象中，因此Executor的生命周期与SqlSession一致。
         // 所以我们缓存在ReuseExecutor上的Statement的作用域是同一个SqlSession
-        return new SqlSessionTemplate(sqlSessionFactory, ExecutorType.REUSE);
-        //others:
+
+        // batch:
         // BatchExecutor的doUpdate更新操作是批量执行，
         // 每一次更新操作保存在内部的statementList中，
         // 每调用一次flushStatements()进行一次批量执行。
         // commit时会调用flushStatements()，
         // 查询操作时也会调用flushStatements()。
+        // 注:BatchExecutor 是没有做 PSCache
     }
 
 
@@ -74,18 +78,25 @@ public class DataSource0Config {
         2018-08-08 16:48:48.672 DEBUG 11072 --- [           main] org.mybatis.spring.SqlSessionUtils       : Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@3b98b809]
         2018-08-08 16:48:48.672 DEBUG 11072 --- [           main] o.s.jdbc.datasource.DataSourceUtils      : Returning JDBC Connection to DataSource
 
-
-        这里执行了2次sql查询,看似我们使用了同一个sqlSession,
-        而SqlSessionTemplate内部sqlSession的实现是使用用动态代理实现的,
-        这个动态代理sqlSessionProxy使用一个模板方法封装了select()等操作,每一次select()查询都会自动先执行openSession(),执行完close()以后调用close()方法,
-        相当于生成了一个新的session实例,所以我们无需手动的去关闭这个session()(关于这一点见下面mybatis的官方文档),
-        当然也无法使用mybatis的一级缓存,也就是说mybatis的一级缓存在spring中是没有作用的.
-
         But when using MyBatis-Spring your beans will be injected with a Spring managed SqlSession or a Spring managed mapper.
         That means that Spring will always handle your transactions.
         You cannot call SqlSession.commit(), SqlSession.rollback() or SqlSession.close() over a Spring managed SqlSession.
         If you try to do so, a UnsupportedOperationException exception will be thrown.
         Note these methods are not exposed in injected mapper classes.
+
+        mybatis-spring中的sqlsession通过spring去管理，
+        前面说到mybatis的一级缓存生效的范围是sqlsession，是为了在sqlsession没有关闭时，业务需要重复查询相同数据使用的。一旦sqlsession关闭，则由这个sqlsession缓存的数据将会被清空。
+        spring对mybatis的sqlsession的使用是由template控制的，sqlsession又被spring当作resource放在当前线程的上下文里（threadlocal),spring通过mybatis调用数据库的过程如下：
+        1、需要访问数据
+        2、spring检查到了这种需求，于是去申请一个mybatis的sqlsession，并将申请到的sqlsession与当前线程绑定，放入threadlocal里面
+        3、template从threadlocal获取到sqlsession，去执行查询
+        4、查询结束，清空threadlocal中与当前线程绑定的sqlsession，释放资源
+        5、又需要访问数据
+        6、返回到步骤2
+
+        结论：通过以上步骤后发现，同一线程里面两次查询同一数据所使用的sqlsession是不相同的，
+        所以mybatis结合spring后，mybatis的一级缓存失效了。
+
      */
 
 }
