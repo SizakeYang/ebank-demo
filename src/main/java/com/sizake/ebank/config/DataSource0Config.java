@@ -11,10 +11,10 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 
 import javax.sql.DataSource;
-import java.util.Properties;
 
 @Configuration
 @MapperScan(basePackages = {"com.sizake.ebank.db"}, sqlSessionTemplateRef = "ebankSqlSessionTemplate0")
@@ -33,21 +33,9 @@ public class DataSource0Config {
     @Primary
     public SqlSessionFactory sqlSessionFactory(@Qualifier("ebankDataSource0") final DataSource dataSource) throws Exception {
         final SqlSessionFactoryBean bean = new SqlSessionFactoryBean();
+        bean.setEnvironment("ebankData0");
         bean.setDataSource(dataSource);
-        //<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-        //  <property name="dataSource" ref="dataSource" />
-        //  <property name="configuration">
-        //    <bean class="org.apache.ibatis.session.Configuration">
-        //      <property name="mapUnderscoreToCamelCase" value="true"/>
-        //    </bean>
-        //  </property>
-        //</bean>
-        Properties props = new Properties();
-        props.setProperty("autoMappingUnknownColumnBehavior", "WARNING");
-        props.setProperty("localCacheScope", "STATEMENT");
-        org.apache.ibatis.session.Configuration configuration = new org.apache.ibatis.session.Configuration();
-        configuration.setVariables(props);
-        bean.setConfiguration(configuration);
+        bean.setConfigLocation(new ClassPathResource("/dbConfig/mybatis_ebank0_global_config.xml"));
         return bean.getObject();
     }
 
