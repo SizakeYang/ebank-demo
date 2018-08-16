@@ -31,7 +31,10 @@ public class PropertyController {
 
 
     @Value("${xx.test.hehe}")
-    private String xx_hehe;//可以通过@Value获取自定义的yml的配置,单无法通过env获取
+    private String xx_hehe;//可以通过@Value获取自定义的yml的配置,但无法通过env获取
+
+    @Value("${web.xxx.msg}")
+    private String test_web;//可以通过@Value获取自定义的yml的配置,也可以通过env获取
 
 
     @Autowired
@@ -74,6 +77,11 @@ public class PropertyController {
     @RequestMapping("/getXXConfig_hehe")
     public String getXXConfig_hehe() {
         return this.xx_hehe;
+    }
+
+    @RequestMapping("/getTest_web")
+    public String getTest_web() {
+        return this.test_web;
     }
 
 
