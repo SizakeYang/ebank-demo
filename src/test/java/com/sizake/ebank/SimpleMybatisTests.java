@@ -30,25 +30,27 @@ public class SimpleMybatisTests {
         final Map<String, Object> conditions = new HashMap<>();
         conditions.put("country", "ABW");
         conditions.put("language", "Dutch");
-        conditions.put("title","");
+        conditions.put("title", "");
 //        System.out.println(String.format("language-map is %s ", this.languageMapper.findByMapAndReturnMap(conditions)));
 //        final List<Map<String, String>> language_list1 = this.languageMapper.findByMapAndReturnListMap1(conditions);
 //        System.out.println(String.format("language-list map1 is %s ", language_list1));
 //        System.out.println(String.format("language-list map1's size is %s ", language_list1.size()));
 
-         List<Map<String, String>> language_list2 = this.languageMapper.findByScript(conditions);
-         System.out.println(String.format("language-list map1 is %s ", language_list2));
-         System.out.println(String.format("language-list map1's size is %s ", language_list2.size()));
+        final List<Map<String, String>> language_list2 = this.languageMapper.findByScript(conditions);
 
+        System.out.println(String.format("language-list map2 is %s ", language_list2));
+        System.out.println(String.format("language-list map2's size is %s ", language_list2.size()));
+
+        // 针对 ReuseExecutor 测试
+        final List<Map<String, String>> language_list3 = this.languageMapper.findByScript(conditions);
+        System.out.println(String.format("language-list map3 is %s ", language_list3));
+        System.out.println(String.format("language-list map3's size is %s ", language_list3.size()));
 
 //        final Language language = new Language();
 //        language.setCountryCode("ABW");
 //        language.setLanguage("Dutch");
 //
 //        System.out.println(String.format("language-obj is %s ", this.languageMapper.findByObjAndReturnObj(language)));
-
-
-
 
 
 //        Map<String, City> city_map1 = this.cityMapper.getAllAndReturnMapObj();

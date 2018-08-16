@@ -20,6 +20,8 @@ public class XXConfig {
 
     private String hehe;
 
+    private String check;
+
     private String[] txtarray;
 
     private List<Map<String, String>> listmap;
@@ -35,7 +37,7 @@ public class XXConfig {
         PropertySourcesPlaceholderConfigurer configurer = new PropertySourcesPlaceholderConfigurer();
         YamlPropertiesFactoryBean yaml = new YamlPropertiesFactoryBean();
 //        yaml.setResources(new FileSystemResource("config.yml"));//File引入
-		yaml.setResources(new ClassPathResource("myConfig/xx.yaml"));//class引入
+        yaml.setResources(new ClassPathResource("myConfig/xx1.yml"), new ClassPathResource("myConfig/xx2.yml"));//classpath引入
         configurer.setProperties(yaml.getObject());
         return configurer;
     }

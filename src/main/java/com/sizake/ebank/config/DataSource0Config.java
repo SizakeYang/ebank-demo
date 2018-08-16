@@ -14,6 +14,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 
 import javax.sql.DataSource;
+import java.util.Properties;
 
 @Configuration
 @MapperScan(basePackages = {"com.sizake.ebank.db"}, sqlSessionTemplateRef = "ebankSqlSessionTemplate0")
@@ -33,6 +34,20 @@ public class DataSource0Config {
     public SqlSessionFactory sqlSessionFactory(@Qualifier("ebankDataSource0") final DataSource dataSource) throws Exception {
         final SqlSessionFactoryBean bean = new SqlSessionFactoryBean();
         bean.setDataSource(dataSource);
+        //<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        //  <property name="dataSource" ref="dataSource" />
+        //  <property name="configuration">
+        //    <bean class="org.apache.ibatis.session.Configuration">
+        //      <property name="mapUnderscoreToCamelCase" value="true"/>
+        //    </bean>
+        //  </property>
+        //</bean>
+        Properties props = new Properties();
+        props.setProperty("autoMappingUnknownColumnBehavior", "WARNING");
+        props.setProperty("localCacheScope", "STATEMENT");
+        org.apache.ibatis.session.Configuration configuration = new org.apache.ibatis.session.Configuration();
+        configuration.setVariables(props);
+        bean.setConfiguration(configuration);
         return bean.getObject();
     }
 
@@ -55,6 +70,7 @@ public class DataSource0Config {
         // 否则将创建一个新的Statement对象，并将其缓存起来。
         // 因为Executor对象随着SqlSession的创建而创建，被保存在SqlSession对象中，因此Executor的生命周期与SqlSession一致。
         // 所以我们缓存在ReuseExecutor上的Statement的作用域是同一个SqlSession
+        // -->关于PreparedStatementCache内存问题,参考hikarcp
 
         // batch:
         // BatchExecutor的doUpdate更新操作是批量执行，

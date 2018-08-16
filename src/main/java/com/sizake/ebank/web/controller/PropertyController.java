@@ -30,12 +30,16 @@ public class PropertyController {
     private String[] simpleList;
 
 
+    @Value("${xx.test.hehe}")
+    private String xx_hehe;//可以通过@Value获取自定义的yml的配置,单无法通过env获取
+
+
     @Autowired
     private XXConfig xxConfig;
 
 
     @Autowired
-    private Environment env;
+    private Environment env;//StandardServletEnvironment
 
 
     @Autowired
@@ -49,7 +53,7 @@ public class PropertyController {
 
     @RequestMapping("/byEnv")
     public String byEnv(@RequestParam("target") final String target) {
-        return this.env.getProperty(target, "default value from env!");
+        return this.env.getProperty(target, "default value from env!");//无法获取XXConfig
     }
 
     @RequestMapping("/byBean")
@@ -65,6 +69,11 @@ public class PropertyController {
     @RequestMapping("/getXXConfig")
     public String getXXConfig() {
         return this.xxConfig.toString();
+    }
+
+    @RequestMapping("/getXXConfig_hehe")
+    public String getXXConfig_hehe() {
+        return this.xx_hehe;
     }
 
 
