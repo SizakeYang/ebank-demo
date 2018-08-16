@@ -1,7 +1,9 @@
 package com.sizake.ebank.config;
 
+import com.sizake.ebank.db.dao.EbankMapper;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
@@ -17,7 +19,12 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import javax.sql.DataSource;
 
 @Configuration
-@MapperScan(basePackages = {"com.sizake.ebank.db"}, sqlSessionTemplateRef = "ebankSqlSessionTemplate0")
+// 有时候我们指定的基包下面的并不全是我们定义的Mapper接口，为此@MapperScan还为我们提供了另外两个可以缩小搜索和注册范围的属性。
+// 一个是annotationClass，另一个是markerInterface。
+// annotationClass：当指定了annotationClass的时候，MapperScannerConfigurer将只注册使用了annotationClass注解标记的接口。-->{default:Annotation.class,即有任意一种注解即可}
+// markerInterface：markerInterface是用于指定一个接口的，当指定了markerInterface之后，MapperScannerConfigurer将只注册继承自markerInterface的接口。
+// 如果上述两个属性都指定了的话，那么MapperScannerConfigurer将取它们的{并集，而不是交集}。即使用了annotationClass进行标记或者继承自markerInterface的接口都将被注册为一个MapperFactoryBean。
+@MapperScan(basePackages = {"com.sizake.ebank.db"}, annotationClass = Mapper.class, markerInterface = EbankMapper.class, sqlSessionTemplateRef = "ebankSqlSessionTemplate0")
 public class DataSource0Config {
 
     //@Autowired可以对成员变量、方法和构造函数进行标注，来完成自动装配的工作，默认根据【类型】进行自动装配，如果需要按【名称】进行装配，则需要配合@Qualifier使用。
@@ -43,13 +50,14 @@ public class DataSource0Config {
     @Primary
     public DataSourceTransactionManager transactionManager(@Qualifier("ebankDataSource0") final DataSource dataSource) {
         //在单一的JDBC/Mybatis DataSource中管理事务;对于涉及到多数据源操作的服务无法保证事务!!!
+        //注意,为事务管理器指定的 DataSource 必须和用来创建 SqlSessionFactoryBean 的 是同一个数据源,否则事务管理器就无法工作了。
         return new DataSourceTransactionManager(dataSource);
     }
 
     @Bean(name = "ebankSqlSessionTemplate0")
     @Primary
     public SqlSessionTemplate sqlSessionTemplate(@Qualifier("ebankSqlSessionFactory0") final SqlSessionFactory sqlSessionFactory) {
-
+        //SqlSessionTemplate 是线程安全的, 可以被多个 DAO 所共享使用。
         return new SqlSessionTemplate(sqlSessionFactory, ExecutorType.SIMPLE);
         // reuse:
         // 它重用的是Statement对象，它会在内部利用一个Map把创建的Statement都缓存起来，
