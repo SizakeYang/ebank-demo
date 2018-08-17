@@ -20,7 +20,7 @@ public interface LanguageMapper extends EbankMapper {
     @Select("SELECT * FROM world.countrylanguage l WHERE l.CountryCode  = #{country} ")
     List<Map<String, String>> findByMapAndReturnListMap1(Map<String, Object> paramMap);//但 country 无值时,查询为 SELECT * FROM world.countrylanguage l WHERE l.CountryCode  = ‘null’
 
-    @Select("SELECT * FROM world.countrylanguage l WHERE l.CountryCode  = #{country} and l.language = #{language}")
+    @Select("SELECT * FROM world.countrylanguage l WHERE l.CountryCode  = #{countryCode} and l.language = #{language}")
     Language findByObjAndReturnObj(Language l);
 
 
@@ -61,6 +61,15 @@ public interface LanguageMapper extends EbankMapper {
             //"</trim>",
             "</script>"})
     List<Map<String, String>> findByScriptWithChooseAndPre(Map<String, Object> paramMap);
+
+
+    @Select({
+            " SELECT * FROM world.countrylanguage l where l.countryCode in ",
+            "        <foreach collection=\"list\" index=\"index\" item=\"item\" open=\"(\" separator=\",\" close=\")\"> ",
+            "            #{item} ",
+            "        </foreach> "
+    })
+    List<Map<String, String>> findByScriptWithFor(List<String> countrys);
 
 
 }

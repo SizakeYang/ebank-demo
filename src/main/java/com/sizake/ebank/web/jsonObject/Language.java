@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 public class Language {
     private String countryCode;
     private String language;
-    private String isOfficial;
+    private Official isOfficial;
     private BigDecimal percentage;
 
 }
