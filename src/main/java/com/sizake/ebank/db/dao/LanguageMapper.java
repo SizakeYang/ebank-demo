@@ -33,6 +33,13 @@ public interface LanguageMapper extends EbankMapper {
             "</script>"})
     List<Map<String, String>> findByScript(Map<String, Object> paramMap);
 
+    // find with like
+    @Select({
+            "SELECT * FROM world.countrylanguage l",
+            "WHERE 1=1",
+            "and l.CountryCode like concat('%',#{countryCode},'%')"
+    })
+    List<Map<String, String>> findWithLike(Map<String, Object> paramMap);
 
 
 }
