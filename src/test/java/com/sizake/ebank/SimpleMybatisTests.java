@@ -2,6 +2,7 @@ package com.sizake.ebank;
 
 import com.sizake.ebank.db.dao.CityMapper;
 import com.sizake.ebank.db.dao.LanguageMapper;
+import com.sizake.ebank.web.jsonObject.City;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,7 @@ public class SimpleMybatisTests {
 
     @Test
     public void annontiation() {
-//        System.out.println(String.format("list is %s ", this.languageMapper.findByStringAndReturnList("ABW")));
+        System.out.println(String.format("list is %s ", this.languageMapper.findByStringAndReturnList("ABW")));
 
         final Map<String, Object> conditions = new HashMap<>();
         conditions.put("country", "ABW");
@@ -53,8 +54,8 @@ public class SimpleMybatisTests {
 //        System.out.println(String.format("language-obj is %s ", this.languageMapper.findByObjAndReturnObj(language)));
 
 
-//        Map<String, City> city_map1 = this.cityMapper.getAllAndReturnMapObj();
-//        System.out.println(String.format("city-multiMap is %s ", city_map1));
+        final Map<String, City> city_map1 = this.cityMapper.getAllAndReturnMapObj();
+        System.out.println(String.format("city-multiMap is %s ", city_map1));
 //
 //        Map<String, Map<String, String>> city_map2 = this.cityMapper.getAllAndReturnListMap();
 //        System.out.println(String.format("city-multiListMap is %s ",city_map2));

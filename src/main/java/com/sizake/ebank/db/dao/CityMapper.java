@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Select;
 import java.util.Map;
 
 @Mapper
+//bean name:cityMapper
 public interface CityMapper {
 
     @Select("select * from world.city")

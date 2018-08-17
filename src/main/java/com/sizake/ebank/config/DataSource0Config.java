@@ -18,6 +18,7 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 
 import javax.sql.DataSource;
 
+
 @Configuration
 // 有时候我们指定的基包下面的并不全是我们定义的Mapper接口，为此@MapperScan还为我们提供了另外两个可以缩小搜索和注册范围的属性。
 // 一个是annotationClass，另一个是markerInterface。
@@ -43,6 +44,7 @@ public class DataSource0Config {
         bean.setEnvironment("ebankData0");
         bean.setDataSource(dataSource);
         bean.setConfigLocation(new ClassPathResource("/dbConfig/mybatis_ebank0_global_config.xml"));
+        //bean.setTransactionFactory();-->SpringManagedTransactionFactory
         return bean.getObject();
     }
 
