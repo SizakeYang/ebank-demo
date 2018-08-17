@@ -18,9 +18,9 @@ public interface LanguageMapper extends EbankMapper {
     Map<String, String> findByMapAndReturnMap(Map<String, Object> paramMap);//只能返回一条数据;
 
     @Select("SELECT * FROM world.countrylanguage l WHERE l.CountryCode  = #{country} ")
-    List<Map<String, String>> findByMapAndReturnListMap1(Map<String, Object> paramMap);
+    List<Map<String, String>> findByMapAndReturnListMap1(Map<String, Object> paramMap);//但 country 无值时,查询为 SELECT * FROM world.countrylanguage l WHERE l.CountryCode  = ‘null’
 
-    @Select("SELECT * FROM world.countrylanguage l WHERE l.CountryCode  = #{countryCode} and l.language = #{language}")
+    @Select("SELECT * FROM world.countrylanguage l WHERE l.CountryCode  = #{country} and l.language = #{language}")
     Language findByObjAndReturnObj(Language l);
 
 
@@ -40,6 +40,27 @@ public interface LanguageMapper extends EbankMapper {
             "and l.CountryCode like concat('%',#{countryCode},'%')"
     })
     List<Map<String, String>> findWithLike(Map<String, Object> paramMap);
+
+
+    @Select({"<script>",
+            "   SELECT * FROM world.countrylanguage l",
+            "       <where>",
+            //"<trim prefix=\"WHERE\" prefixOverrides=\"AND |OR \">",
+            "           <choose>",
+            "               <when test=\"country != null\">",
+            "                   AND l.countryCode = #{country}",
+            "               </when>",
+            "               <when test=\"language != null\">",
+            "                   AND l.language = #{language}",
+            "               </when>",
+            "               <otherwise>",
+            "                   AND l.IsOfficial = 'T' ",
+            "               </otherwise>",
+            "           </choose>",
+            "       </where>",
+            //"</trim>",
+            "</script>"})
+    List<Map<String, String>> findByScriptWithChooseAndPre(Map<String, Object> paramMap);
 
 
 }
