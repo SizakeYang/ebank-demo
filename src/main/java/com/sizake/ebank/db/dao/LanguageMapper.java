@@ -1,6 +1,7 @@
 package com.sizake.ebank.db.dao;
 
 import com.sizake.ebank.web.jsonObject.Language;
+import com.sizake.ebank.web.jsonObject.Languages;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
@@ -42,6 +43,7 @@ public interface LanguageMapper extends EbankMapper {
     List<Map<String, String>> findWithLike(Map<String, Object> paramMap);
 
 
+
     @Select({"<script>",
             "   SELECT * FROM world.countrylanguage l",
             "       <where>",
@@ -62,14 +64,58 @@ public interface LanguageMapper extends EbankMapper {
             "</script>"})
     List<Map<String, String>> findByScriptWithChooseAndPre(Map<String, Object> paramMap);
 
-
-    @Select({
+    //你可以将一个 List 实例或者数组作为参数对象传给 MyBatis，当你这么做的时候，MyBatis 会自动将它包装在一个 Map 中并以名称为键。List 实例将会以“list”作为键，而数组实例的键将是“array”
+    //0.foreach-list<基本类型>
+    @Select({"<script>",
             " SELECT * FROM world.countrylanguage l where l.countryCode in ",
             "        <foreach collection=\"list\" index=\"index\" item=\"item\" open=\"(\" separator=\",\" close=\")\"> ",
             "            #{item} ",
-            "        </foreach> "
+            "        </foreach> ",
+            "</script>"
     })
     List<Map<String, String>> findByScriptWithFor(List<String> countrys);
+
+    //1.foreach-list<对象>
+    @Select({"<script>",
+            " SELECT * FROM world.countrylanguage l where l.countryCode in ",
+            "        <foreach collection=\"list\" index=\"index\" item=\"language\" open=\"(\" separator=\",\" close=\")\"> ",
+            "            #{language.countryCode} ",
+            "        </foreach> ",
+            "</script>"
+    })
+    List<Map<String, String>> findByScriptWithFor1(List<Language> languages);
+
+
+    //2.foreach-map-传入map的某一项
+    @Select({"<script>",
+            " SELECT * FROM world.countrylanguage l where l.countryCode in ",
+            "        <foreach collection=\"countryCodes\" index=\"index\" item=\"language\" open=\"(\" separator=\",\" close=\")\"> ",
+            "            #{language.countryCode} ",
+            "        </foreach> ",
+            "</script>"
+    })
+    List<Map<String, String>> findByScriptWithFor2(Map<String, Object> obj);
+
+    //3.foreach-对象里的list
+    @Select({"<script>",
+            " SELECT * FROM world.countrylanguage l where l.countryCode in ",
+            "        <foreach collection=\"languages\" index=\"index\" item=\"language\" open=\"(\" separator=\",\" close=\")\"> ",
+            "            #{language.countryCode,jdbcType=DOUBLE} ",//1:jdbcTyp 必须复合 org.apache.ibatis.type.JdbcType;2 jdbcType 影响typeHandle的选择,但不是决定性作用:a.TypeHandlerRegistry:于构造函数 预先注册好跟对应javatype对应的typehandler(以及默认的);2.TypeHandlerRegistry.getTypeHandler 在根据javatype和jdbctype获取TypeHandler,如果无法根据javatype获取,报异常;如果无法根据jdbctype获取,选择默认(同时没有任何日志!!!)
+            "        </foreach> ",
+            "</script>"
+    })
+    List<Map<String, String>> findByScriptWithFor3(Languages obj);
+
+    //4.foreach-遍历map
+    @Select({"<script>",
+            " SELECT * FROM world.countrylanguage l where ",
+            " <foreach item=\"item\" index=\"key\" collection=\"obj\" separator=\"AND\">",
+            "            ${key} = #{item} ",
+            "        </foreach> ",
+            "</script>"
+    })
+    List<Map<String, String>> findByScriptWithFor4(@Param("obj") Map<String, Object> obj);
+
 
 
 }
