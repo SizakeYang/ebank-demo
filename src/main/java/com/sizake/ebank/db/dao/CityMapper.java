@@ -27,7 +27,7 @@ public interface CityMapper {
 
 
     //Parameters: 0(Integer), 1(Integer)
-    //index 于list/array:序号
+    //index 于list/array:序号,从0开始计数
     @Select({"<script>",
             " SELECT * FROM world.city c where c.id in ",
             "        <foreach collection=\"list\" index=\"index\" item=\"item\" open=\"(\" separator=\",\" close=\")\"> ",
