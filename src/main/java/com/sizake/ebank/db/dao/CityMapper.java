@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.MapKey;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
+import java.util.List;
 import java.util.Map;
 
 @Mapper
@@ -23,6 +24,18 @@ public interface CityMapper {
     Map<String, Map<String, String>> getAllAndReturnListMap();
 
     //联合主键-->way1:get List<Map> and transform it to Map
+
+
+    //Parameters: 0(Integer), 1(Integer)
+    //index 于list/array:序号
+    @Select({"<script>",
+            " SELECT * FROM world.city c where c.id in ",
+            "        <foreach collection=\"list\" index=\"index\" item=\"item\" open=\"(\" separator=\",\" close=\")\"> ",
+            "            #{index} ",
+            "        </foreach> ",
+            "</script>"
+    })
+    List<Map<String, String>> findByScriptWithFor(List<String> countrys);
 
 
 }
