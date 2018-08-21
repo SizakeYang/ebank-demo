@@ -43,7 +43,6 @@ public interface LanguageMapper extends EbankMapper {
     List<Map<String, String>> findWithLike(Map<String, Object> paramMap);
 
 
-
     @Select({"<script>",
             "   SELECT * FROM world.countrylanguage l",
             "       <where>",
@@ -73,7 +72,7 @@ public interface LanguageMapper extends EbankMapper {
             "        </foreach> ",
             "</script>"
     })
-    List<Map<String, String>> findByScriptWithFor(List<String> countrys);
+    List<Map<String, String>> findByScriptWithFor(List<String> countrys);//可以有某一项为null:list.add(null);
 
     //1.foreach-list<对象>
     @Select({"<script>",
@@ -100,7 +99,7 @@ public interface LanguageMapper extends EbankMapper {
     @Select({"<script>",
             " SELECT * FROM world.countrylanguage l where l.countryCode in ",
             "        <foreach collection=\"languages\" index=\"index\" item=\"language\" open=\"(\" separator=\",\" close=\")\"> ",
-            "            #{language.countryCode,jdbcType=DOUBLE} ",//1:jdbcTyp 必须复合 org.apache.ibatis.type.JdbcType;2 jdbcType 影响typeHandle的选择,但不是决定性作用:a.TypeHandlerRegistry:于构造函数 预先注册好跟对应javatype对应的typehandler(以及默认的);2.TypeHandlerRegistry.getTypeHandler 在根据javatype和jdbctype获取TypeHandler,如果无法根据javatype获取,报异常;如果无法根据jdbctype获取,选择默认(同时没有任何日志!!!)
+            "            #{language.countryCode,jdbcType=DOUBLE} ",//1:jdbcTyp 必须符合 org.apache.ibatis.type.JdbcType;2 jdbcType 影响typeHandle的选择,但不是决定性作用:a.TypeHandlerRegistry:于构造函数 预先注册好跟对应javatype对应的typehandler(以及默认的);2.TypeHandlerRegistry.getTypeHandler 在根据javatype和jdbctype获取TypeHandler,如果无法根据javatype获取,报异常;如果无法根据jdbctype获取(没有设置或者设置找不到),选择默认(同时没有任何日志!!!)
             "        </foreach> ",
             "</script>"
     })
@@ -114,8 +113,7 @@ public interface LanguageMapper extends EbankMapper {
             "        </foreach> ",
             "</script>"
     })
-    List<Map<String, String>> findByScriptWithFor4(@Param("obj") Map<String, Object> obj);
-
+    List<Map<String, String>> findByScriptWithFor4(@Param("obj") Map<String, Object> obj);//可以有某一项为null:map.put("countryCode", null);
 
 
 }
