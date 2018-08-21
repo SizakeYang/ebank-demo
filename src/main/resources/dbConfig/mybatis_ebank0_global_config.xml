@@ -5,21 +5,17 @@
 <configuration>
 
     <settings>
-        <setting name="cacheEnabled" value="true"/>
-        <setting name="lazyLoadingEnabled" value="true"/>
-        <setting name="multipleResultSetsEnabled" value="true"/>
-        <setting name="useColumnLabel" value="true"/>
-        <setting name="useGeneratedKeys" value="false"/>
-        <setting name="autoMappingBehavior" value="PARTIAL"/>
+
+
+        <!-- 指定发现自动映射目标未知列（或者未知属性类型）的行为 -->
+        <!-- WARNING: 输出提醒日志 -->
+        <!-- example: o.a.i.s.AutoMappingUnknownColumnBehavior : Unknown column is detected on 'com.sizake.ebank.db.dao.SakilaMapper.getActor' auto-mapping. Mapping parameters are [columnName=last_name,propertyName=last_name,propertyType=null]-->
         <setting name="autoMappingUnknownColumnBehavior" value="WARNING"/>
-        <setting name="defaultExecutorType" value="SIMPLE"/>
-        <setting name="defaultStatementTimeout" value="25"/>
-        <setting name="defaultFetchSize" value="100"/>
-        <setting name="safeRowBoundsEnabled" value="false"/>
-        <setting name="mapUnderscoreToCamelCase" value="false"/>
-        <setting name="localCacheScope" value="SESSION"/>
-        <setting name="jdbcTypeForNull" value="OTHER"/>
-        <setting name="lazyLoadTriggerMethods" value="equals,clone,hashCode,toString"/>
+
+        <!--是否开启自动驼峰命名规则（camel case）映射，即从经典数据库列名 A_COLUMN 到经典 Java 属性名 aColumn 的类似映射。-->
+        <!-- 即字段名必须为aColumn 而非 A_COLUMN-->
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+
     </settings>
 
 </configuration>
