@@ -12,7 +12,11 @@
         <!--<result property="title" column="title"/>&lt;!&ndash;如果要像注解一样可以省略,需要resultMap/association/collection 开启 autoMapping="true",但可能会导致 AutoMappingUnknownColumnBehavior warn 日志{因为} &ndash;&gt;-->
         <result property="cost" column="replacement_cost"/>
         <!--autoMapping:即使上面的resultMap配置了 autoMapping="true" 仍需指定-->
-        <association property="category" javaType="Category" autoMapping="true"><!--association处理has-a-->
+        <!--association处理has-a-->
+        <!--association/collection/case 该部分也有默认的resultMap-id-->
+        <!--详情见:XMLMapperBuilder.processNestedResultMappings -->
+        <!--当节点无id属性时, xml-resultMap默认id,见:XMLMapperBuilder.resultMapElement: resultMapNode.getValueBasedIdentifier() -->
+        <association property="category" javaType="Category" autoMapping="true">
             <id property="id" column="category_id"/>
             <!--<result property="name" column="name"/>-->
         </association>

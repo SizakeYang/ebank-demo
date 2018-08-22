@@ -3,7 +3,6 @@ package com.sizake.ebank.db.dao;
 import com.sizake.ebank.web.jsonObject.Language;
 import com.sizake.ebank.web.jsonObject.Languages;
 import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
@@ -22,11 +21,13 @@ public interface LanguageMapper extends EbankMapper {
     @Select("SELECT * FROM world.countrylanguage l WHERE l.CountryCode  = #{country} ")
     List<Map<String, String>> findByMapAndReturnListMap1(Map<String, Object> paramMap);//但 country 无值时,查询为 SELECT * FROM world.countrylanguage l WHERE l.CountryCode  = ‘null’
 
-    //默认resultMap-id:@ResultMap("findByObjAndReturnObj-Language")
+    //默认resultMap-id:
+    //@ResultMap("com.sizake.ebank.db.dao.LanguageMapper{全限定类名}.findByObjAndReturnObj{方法名}-Language{方法参数非全限定名拼接,以‘-’为分割符,如无入参则为void}")
+    //@ResultMap("com.sizake.ebank.db.dao.LanguageMapper.findByObjAndReturnObj-Language")
+    //详情可见:Configuration.resultMaps--> MapperAnnotationBuilder.generateResultMapName
     @Select("SELECT * FROM world.countrylanguage l WHERE l.CountryCode  = #{countryCode} and l.language = #{language}")
     Language findByObjAndReturnObj(Language l);
 
-    @ResultMap("xxxx")
     @Select("SELECT * FROM world.countrylanguage l WHERE l.CountryCode  = #{countryCode} and l.language = #{language}")
     Language findByObjAndReturnObj1(Language l);
 

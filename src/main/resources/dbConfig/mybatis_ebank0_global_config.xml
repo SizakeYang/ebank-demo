@@ -22,6 +22,7 @@
     </typeAliases>
 
     <mappers>
+        <!--多种引入方式:mapper-{resource,class,url};package-name -->
         <mapper resource="dbConfig/film.xml"/><!--前面不能以'/'开头-->
     </mappers>
 
