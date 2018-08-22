@@ -3,6 +3,7 @@ package com.sizake.ebank.db.dao;
 import com.sizake.ebank.web.jsonObject.Language;
 import com.sizake.ebank.web.jsonObject.Languages;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
@@ -21,8 +22,13 @@ public interface LanguageMapper extends EbankMapper {
     @Select("SELECT * FROM world.countrylanguage l WHERE l.CountryCode  = #{country} ")
     List<Map<String, String>> findByMapAndReturnListMap1(Map<String, Object> paramMap);//但 country 无值时,查询为 SELECT * FROM world.countrylanguage l WHERE l.CountryCode  = ‘null’
 
+    //默认resultMap-id:@ResultMap("findByObjAndReturnObj-Language")
     @Select("SELECT * FROM world.countrylanguage l WHERE l.CountryCode  = #{countryCode} and l.language = #{language}")
     Language findByObjAndReturnObj(Language l);
+
+    @ResultMap("xxxx")
+    @Select("SELECT * FROM world.countrylanguage l WHERE l.CountryCode  = #{countryCode} and l.language = #{language}")
+    Language findByObjAndReturnObj1(Language l);
 
 
     @Select({"<script>",
@@ -109,7 +115,7 @@ public interface LanguageMapper extends EbankMapper {
     @Select({"<script>",
             " SELECT * FROM world.countrylanguage l where ",
             " <foreach item=\"item\" index=\"key\" collection=\"obj\" separator=\"AND\">",
-            "            ${key} = #{item} ",
+            "            ${key} = #{item} ",//对于诸如表名、字段名（如order by子句后的排序字段）这些表本身或其字段的名字，和SQL关键字（如order by子句后的asc关键字），是不能使用#{…}方式的，而只能使用字符串替换的${…}方式
             "        </foreach> ",
             "</script>"
     })

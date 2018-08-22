@@ -4,7 +4,6 @@ import com.sizake.ebank.web.jsonObject.City;
 import org.apache.ibatis.annotations.MapKey;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.cursor.Cursor;
 
 import java.util.List;
 import java.util.Map;
@@ -39,9 +38,9 @@ public interface CityMapper {
     List<Map<String, String>> findByScriptWithFor(List<String> countrys);
 
 
-    @Select("select * from world.city")
-        //在mybatis-spring的整合中，mybatis中sqlSession中由org.mybatis.spring.SqlSessionTemplate实现替代。
-        // sqlSession关闭是由SqlSessionTemplate管理,所以返回后的Cursor对象是已经被关闭了的(Cursor.isOpen)，无法使用。
-    Cursor<City> getAllAndReturnMapObjWithCursor();
+//    @Select("select * from world.city")
+//        //在mybatis-spring的整合中，mybatis中sqlSession中由org.mybatis.spring.SqlSessionTemplate实现替代。
+//        // sqlSession关闭是由SqlSessionTemplate管理,所以返回后的Cursor对象是已经被关闭了的(Cursor.isOpen)，无法使用。
+//    Cursor<City> getAllAndReturnMapObjWithCursor();//可以通过分页解决
 
 }

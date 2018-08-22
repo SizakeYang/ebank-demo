@@ -5,8 +5,6 @@
 <configuration>
 
     <settings>
-
-
         <!-- 指定发现自动映射目标未知列（或者未知属性类型）的行为 -->
         <!-- WARNING: 输出提醒日志 -->
         <!-- example: o.a.i.s.AutoMappingUnknownColumnBehavior : Unknown column is detected on 'com.sizake.ebank.db.dao.SakilaMapper.getActor' auto-mapping. Mapping parameters are [columnName=last_name,propertyName=last_name,propertyType=null]-->
@@ -14,9 +12,19 @@
 
         <!--是否开启自动驼峰命名规则（camel case）映射，即从经典数据库列名 A_COLUMN 到经典 Java 属性名 aColumn 的类似映射。-->
         <!-- 即字段名必须为aColumn 而非 A_COLUMN-->
+        <!-- 生产禁用 -->
         <setting name="mapUnderscoreToCamelCase" value="true"/>
-
     </settings>
 
+
+    <typeAliases>
+        <package name="com.sizake.ebank.web.jsonObject"/>
+    </typeAliases>
+
+    <mappers>
+        <mapper resource="dbConfig/film.xml"/><!--前面不能以'/'开头-->
+    </mappers>
+
 </configuration>
+
 

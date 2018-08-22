@@ -45,7 +45,7 @@ public class ValidController {
         final Map<String, String> m1 = new HashMap<>();
         m1.put("1", "m1");
         m1.put("2", "m2");
-        m1.put("2", "m2");
+        m1.put("3", "m2");
 
         obj.setMss1(m1);
 
@@ -85,7 +85,7 @@ public class ValidController {
         obj.setLmslo1(lmslo1);
 
 
-        return new ObjectMapper().writeValueAsString(obj);
+        return new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(obj);//格式化输出json-->writerWithDefaultPrettyPrinter()
     }
 
     @PostMapping(value = "/checkInput1", consumes = {"application/json"})

@@ -1,6 +1,7 @@
 package com.sizake.ebank.db.dao;
 
 import com.sizake.ebank.web.jsonObject.Actor;
+import com.sizake.ebank.web.jsonObject.Film;
 import org.apache.ibatis.annotations.*;
 
 import java.util.Date;
@@ -37,5 +38,45 @@ public interface SakilaMapper {
     @Select("select a.actor_id,a.first_name,a.last_name,a.last_update from sakila.actor a")
     List<Actor> getActor1();
 
+
+    @Results(id = "getFilm", value = {
+            @Result(property = "id", column = "film_id"), //其实也可以通过别名{select a as b from table}解决
+            @Result(property = "cost", column = "replacement_cost"),
+            @Result(property = "category.name", column = "name")//无论是哪一种情形，你都可以使用通常的点式分隔形式进行复杂属性导航
+    })
+    @Select("select f.film_id,f.title,f.replacement_cost,c.name  from sakila.film f\n" +
+            "left join sakila.film_category fc on f.film_id = fc.film_id\n" +
+            "left join sakila.category c on c.category_id = fc.category_id")
+    List<Film> getFilm();
+
+
+    @ResultMap("filmForTest")//等同于@ResultMap("com.sizake.ebank.db.dao.SakilaMapper.filmForTest")
+    @Select("select f.film_id,f.title,f.replacement_cost,c.category_id,c.name  from sakila.film f\n" +
+            "left join sakila.film_category fc on f.film_id = fc.film_id\n" +
+            "left join sakila.category c on c.category_id = fc.category_id")
+    List<Film> getFilm1();
+
+
+    @ResultMap("com.sizake.ebank.db.dao.SakilaMapper.filmForTest")
+    @Select("select f.film_id,f.title,f.replacement_cost,c.category_id, c.name,a.actor_id,a.first_name,a.last_name,a.last_update  from sakila.film f\n" +
+            "left join sakila.film_category fc on f.film_id = fc.film_id\n" +
+            "left join sakila.category c on c.category_id = fc.category_id\n" +
+            "left join sakila.film_actor fa on fa.film_id = f.film_id\n" +
+            "left join sakila.actor a on a.actor_id = fa.actor_id\n" +
+            "")
+    List<Film> getFilm2();//一对一,一对多
+
+
+    @ResultMap("filmForTest2")
+    @Select("select f.film_id,f.title,f.replacement_cost,\n" +
+            "       a.actor_id,a.first_name,a.last_name,a.last_update,\n" +
+            "       f2.film_id as actor_film_id,f2.title as actor_title,f2.replacement_cost as actor_replacement_cost\n" +
+            "from sakila.film f\n" +
+            "left join sakila.film_actor fa on fa.film_id = f.film_id\n" +
+            "left join sakila.actor a on a.actor_id = fa.actor_id\n" +
+            "left join sakila.film_actor fa2  on fa2.actor_id = a.actor_id\n" +
+            "left join sakila.film f2 on f2.film_id = fa2.film_id\n" +
+            "where f.film_id = 1\n")
+    List<Film> getFilm3();//多对多
 
 }

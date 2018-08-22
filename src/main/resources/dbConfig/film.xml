@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sizake.ebank.db.dao.SakilaMapper">
+    <!-- 超复杂的 Result Map -->
+    <!--type:没有设置@Alias时,非全限定类名;设置@Alias时,只能@Alias设置值-->
+    <!--autoMapping:需显示指定-->
+    <resultMap id="filmForTest" type="Film" autoMapping="true">
+
+        <result property="id" column="film_id"/>
+        <!--<result property="title" column="title"/>&lt;!&ndash;如果要像注解一样可以省略,需要resultMap/association/collection 开启 autoMapping="true",但可能会导致 AutoMappingUnknownColumnBehavior warn 日志{因为} &ndash;&gt;-->
+        <result property="cost" column="replacement_cost"/>
+        <!--autoMapping:即使上面的resultMap配置了 autoMapping="true" 仍需指定-->
+        <association property="category" javaType="Category" autoMapping="true"><!--association处理has-a-->
+            <id property="id" column="category_id"/>
+            <!--<result property="name" column="name"/>-->
+        </association>
+        <!-- 一对多 -->
+        <!--collection处理has-many-->
+        <!--mybatis-xml 的强大之处,轻松处理 left join 并返回合适的(一对多)对象;注解只能处理一对一的形式(据我所知) -->
+        <collection property="actors" ofType="Actor" notNullColumn="actor_id,first_name">
+            <id property="id" column="actor_id"/>
+            <result property="firstName" column="first_name"/>
+            <result property="lastNameTest" column="last_name"/>
+            <result property="last_update" column="last_update"/>
+
+
+        </collection>
+
+    </resultMap>
+
+
+    <resultMap id="filmForTest2" type="Film" autoMapping="true">
+        <result property="id" column="film_id"/>
+        <result property="cost" column="replacement_cost"/>
+        <collection property="actors" ofType="Actor" notNullColumn="actor_id,first_name">
+            <id property="id" column="actor_id"/>
+            <result property="firstName" column="first_name"/>
+            <result property="lastNameTest" column="last_name"/>
+            <result property="last_update" column="last_update"/>
+            <!-- collection 里可以在有一层 collection -->
+            <!-- 多对多,有维度限制 -->
+            <collection property="films" ofType="Film" columnPrefix="actor_" autoMapping="true">
+                <result property="id" column="film_id"/>
+                <!--<result property="title" column="title"/>--><!--columnPrefix 和  autoMapping 可以结合使用-->
+                <result property="cost" column="replacement_cost"/>
+            </collection>
+        </collection>
+    </resultMap>
+
+
+</mapper>
