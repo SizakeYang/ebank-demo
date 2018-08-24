@@ -26,6 +26,12 @@
 
         <!--前面不能以'/'开头-->
         <mapper resource="dbConfig/film.xml"/>
+
+        <!--‘file:///’:协议类型不能少-->
+        <!--<mapper url="file:///D:\\BEServer-all\\ebank\\src\\main\\resources\\dbConfig\\film.xml" />-->
+
+        <!-- 通过package元素将会把指定包下面的所有{Mapper接口,而不是xml文件}进行注册 -->
+        <!--<package name="com.sizake.ebank.db.dao"/>-->
     </mappers>
 
 </configuration>
