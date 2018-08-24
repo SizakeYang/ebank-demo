@@ -7,8 +7,15 @@
     <!--type:没有设置@Alias时,非全限定类名;设置@Alias时,只能@Alias设置值-->
     <!--autoMapping:需显示指定-->
     <resultMap id="filmForTest" type="Film" autoMapping="true">
-
-        <result property="id" column="film_id"/>
+        <!--flagging results as ID will help improve overall performance-->
+        <!--id 和 result 都将一个列的值映射到一个简单数据类型(字符串,整型,双精度浮点数,日期等)的属性或字段。
+        这两者之间的唯一不同是，
+        id 表示的结果将是对象的标识属性，这会在比较对象实例时用到。
+        这样可以提高整体的性能，尤其是缓存和嵌套结果映射(也就是联合映射)的时候。-->
+        <!--
+        handleRowValues
+        -->
+        <id property="id" column="film_id"/>
         <!--<result property="title" column="title"/>&lt;!&ndash;如果要像注解一样可以省略,需要resultMap/association/collection 开启 autoMapping="true",但可能会导致 AutoMappingUnknownColumnBehavior warn 日志{因为} &ndash;&gt;-->
         <result property="cost" column="replacement_cost"/>
         <!--autoMapping:即使上面的resultMap配置了 autoMapping="true" 仍需指定-->
@@ -36,7 +43,7 @@
 
 
     <resultMap id="filmForTest2" type="Film" autoMapping="true">
-        <result property="id" column="film_id"/>
+        <id property="id" column="film_id"/>
         <result property="cost" column="replacement_cost"/>
         <collection property="actors" ofType="Actor" notNullColumn="actor_id,first_name">
             <id property="id" column="actor_id"/>
@@ -46,7 +53,7 @@
             <!-- collection 里可以在有一层 collection -->
             <!-- 多对多,有维度限制 -->
             <collection property="films" ofType="Film" columnPrefix="actor_" autoMapping="true">
-                <result property="id" column="film_id"/>
+                <id property="id" column="film_id"/>
                 <!--<result property="title" column="title"/>--><!--columnPrefix 和  autoMapping 可以结合使用-->
                 <result property="cost" column="replacement_cost"/>
             </collection>

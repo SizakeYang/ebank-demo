@@ -18,12 +18,13 @@ public interface SakilaMapper {
     */
 
     @Results(id = "getActor", value = {
-            @Result(property = "lastNameTest", column = "last_name")//其实也可以通过别名{select a as b from table}解决
+            @Result(property = "lastNameTest", column = "last_name", id = false)
     })
     @ConstructorArgs({ //构造器注入而非set注入,少用
-            @Arg(column = "actor_id", name = "id", id = true),
+            @Arg(column = "actor_id", name = "id", id = true),//flagging results as ID will help improve overall performance
             @Arg(column = "last_update", name = "last_update")//构造方法形参的名字(通过 @Param("xxx")指定)。从3.4.3版本开始，通过指定具体的名字，你可以以任意顺序写入arg元素
     })
+    //其实也可以通过别名{select a as b from table}解决
     @Select("select a.actor_id,a.first_name,a.last_name,a.last_update from sakila.actor a")
     List<Actor> getActor();
 
@@ -40,7 +41,9 @@ public interface SakilaMapper {
 
 
     @Results(id = "getFilm", value = {
-            @Result(property = "id", column = "film_id"), //其实也可以通过别名{select a as b from table}解决
+            //flagging results as ID will help improve overall performance
+            // 实际上可能没有用处
+            @Result(property = "id", column = "film_id", id = true),
             @Result(property = "cost", column = "replacement_cost"),
             @Result(property = "category.name", column = "name")//无论是哪一种情形，你都可以使用通常的点式分隔形式进行复杂属性导航
     })
