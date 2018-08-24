@@ -13,7 +13,21 @@
         id 表示的结果将是对象的标识属性，这会在比较对象实例时用到。
         这样可以提高整体的性能，尤其是缓存和嵌套结果映射(也就是联合映射)的时候。-->
         <!--
-        DefaultResultSetHandler.handleRowValues
+            DefaultResultSetHandler.handleRowValues
+            1.final CacheKey rowKey = createRowKey(discriminatedResultMap, rsw, null);
+            1.1.List<ResultMapping> resultMappings = getResultMappingsForRowKey(resultMap);
+            1.1.1.DefaultResultSetHandler.getResultMappingsForRowKey:设置了id属性-resultMap.getIdResultMappings()/没有设置id属性-resultMappings = resultMap.getPropertyResultMappings();
+            2.Object partialObject = nestedResultObjects.get(rowKey);
+            2.1.
+            for (int i = 0; i < updateList.size(); i++) {
+              Object thisObject = updateList.get(i);
+              Object thatObject = cacheKey.updateList.get(i);
+              if (!ArrayUtil.equals(thisObject, thatObject)) {
+                return false;
+              }
+            }
+            3.rowValue = getRowValue(rsw, discriminatedResultMap, rowKey, null, partialObject);
+            3.1.nestedResultObjects.put(combinedKey, rowValue);
         -->
         <id property="id" column="film_id"/>
         <!--<result property="title" column="title"/>&lt;!&ndash;如果要像注解一样可以省略,需要resultMap/association/collection 开启 autoMapping="true",但可能会导致 AutoMappingUnknownColumnBehavior warn 日志{因为} &ndash;&gt;-->
