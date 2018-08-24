@@ -50,6 +50,28 @@ public interface LanguageMapper extends EbankMapper {
     List<Map<String, String>> findWithLike(Map<String, Object> paramMap);
 
 
+    // find with like
+    @Select({
+            "<script>",
+            " <bind name=\"countryCode\" value=\"'%' + countryCode + '%'\" />",//ongl 表达式
+            "SELECT * FROM world.countrylanguage l",
+            "WHERE 1=1",
+            "and l.CountryCode like #{countryCode}",
+            "</script>",
+
+    })
+    List<Map<String, String>> findWithLike2(Map<String, Object> paramMap);
+
+
+    @Select({
+            "SELECT * FROM world.countrylanguage l",
+            "WHERE 1=1",
+            "and l.CountryCode like concat('%',#{map.countryCode},'%')"
+    })
+    List<Map<String, String>> findWithLike3(@Param("map") Map<String, Object> paramMap);//@Param 与无@Param 的区别
+
+
+
     @Select({"<script>",
             "   SELECT * FROM world.countrylanguage l",
             "       <where>",
