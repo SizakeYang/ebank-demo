@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.*;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface SakilaMapper {
@@ -92,5 +93,21 @@ public interface SakilaMapper {
             "where f.rental_duration in(4)\n" +
             "and f.film_id in (1,4,13)")
     List<Film> getFilm4();
+
+
+    @Select("select * from sakila.film f where f.film_id<20 ")
+    List<Map<String, String>> getFilm5();
+
+
+    @Select({"<script>",
+            "select * from sakila.film f",
+            "WHERE",
+            "<if test='title!=null'>",//test采用ongl解析
+            " <![CDATA[f.film_id<20]]>  ",//转义 or cdat
+            "</if>",//if-->when,is ok.
+            "</script>"})
+    List<Map<String, String>> getFilm6(Map<String, Object> paramMap);
+
+
 
 }
