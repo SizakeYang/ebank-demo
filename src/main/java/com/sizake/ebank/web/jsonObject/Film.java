@@ -16,6 +16,7 @@ public class Film {
 
     private String id;
     private String title;
+    private String rentalDuration;
     private BigDecimal cost;
     private Category category;//一对一
     private List<Actor> actors;//一对多-->多对多

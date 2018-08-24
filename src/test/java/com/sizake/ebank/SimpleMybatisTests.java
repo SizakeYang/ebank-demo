@@ -30,7 +30,7 @@ public class SimpleMybatisTests {
 
     @Test
     public void annontiation() throws JsonProcessingException {
-        final List list = this.sakilaMapper.getFilm2();
+        final List list = this.sakilaMapper.getFilm4();
         System.out.println(new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(list));
     }
 }

@@ -17,6 +17,9 @@
             1.final CacheKey rowKey = createRowKey(discriminatedResultMap, rsw, null);
             1.1.List<ResultMapping> resultMappings = getResultMappingsForRowKey(resultMap);
             1.1.1.DefaultResultSetHandler.getResultMappingsForRowKey:设置了id属性-resultMap.getIdResultMappings()/没有设置id属性-resultMappings = resultMap.getPropertyResultMappings();
+            1.1.1.1
+                cacheKey.update(columnName);
+                cacheKey.update(value);
             2.Object partialObject = nestedResultObjects.get(rowKey);
             2.1.
             for (int i = 0; i < updateList.size(); i++) {
@@ -30,7 +33,17 @@
             3.1.nestedResultObjects.put(combinedKey, rowValue);
         -->
         <id property="id" column="film_id"/>
-        <!--<result property="title" column="title"/>&lt;!&ndash;如果要像注解一样可以省略,需要resultMap/association/collection 开启 autoMapping="true",但可能会导致 AutoMappingUnknownColumnBehavior warn 日志{因为} &ndash;&gt;-->
+        <!--<result property="title" column="title"/>&lt;!&ndash;
+        如果要像注解一样可以省略,需要resultMap/association/collection 开启 autoMapping="true",
+        但可能会导致 AutoMappingUnknownColumnBehavior warn 日志
+        {因为先尝试自动映射再根据<<result>/<id>标签映射}
+        {   详情见:DefaultResultSetHandler.getRowValue
+            if (shouldApplyAutomaticMappings(resultMap, true)) {
+              foundValues = applyAutomaticMappings(rsw, resultMap, metaObject, columnPrefix) || foundValues;
+            }
+            foundValues = applyPropertyMappings(rsw, resultMap, metaObject, lazyLoader, columnPrefix) || foundValues;
+        }
+        &ndash;&gt;-->
         <result property="cost" column="replacement_cost"/>
         <!--autoMapping:即使上面的resultMap配置了 autoMapping="true" 仍需指定-->
         <!--association处理has-a-->
@@ -42,15 +55,14 @@
             <!--<result property="name" column="name"/>-->
         </association>
         <!-- 一对多 -->
-        <!--collection处理has-many-->
         <!--mybatis-xml 的强大之处,轻松处理 left join 并返回合适的(一对多)对象;注解只能处理一对一的形式(据我所知) -->
-        <collection property="actors" ofType="Actor" notNullColumn="actor_id,first_name">
+        <!--collection处理has-many-->
+        <collection property="actors" ofType="Actor"
+                    notNullColumn="actor_id,first_name"><!--由于notNullColumn,查询出的列必须包含actor_id,first_name-->
             <id property="id" column="actor_id"/>
             <result property="firstName" column="first_name"/>
             <result property="lastNameTest" column="last_name"/>
             <result property="last_update" column="last_update"/>
-
-
         </collection>
 
     </resultMap>
@@ -72,6 +84,31 @@
                 <result property="cost" column="replacement_cost"/>
             </collection>
         </collection>
+    </resultMap>
+
+    <resultMap id="filmForTest3" type="Film" autoMapping="true">
+        <id property="id" column="film_id"/>
+        <result property="cost" column="replacement_cost"/>
+        <!--discriminator处理is-a -->
+        <discriminator javaType="String" column="rental_duration"><!--select 查出来的列必须包含rental_duration-->
+            <case value="4" resultType="Film1">
+                <!-- 因为开启了autoMapping="true",以下映射可以省略-->
+                <!-- -->
+                <!--<result property="rentalRate" column="rental_rate"/>-->
+            </case>
+            <!--如果没有任何 一个实例相匹配,那么 MyBatis 仅仅使用鉴别器块外定义的结果映射,并导致 会导致 AutoMappingUnknownColumnBehavior warn 日志-->
+        </discriminator>
+    </resultMap>
+
+    <resultMap id="filmForTest4" type="Film" autoMapping="true">
+        <id property="id" column="film_id"/>
+        <result property="cost" column="replacement_cost"/>
+    </resultMap>
+
+    <!--extends处理is-a -->
+    <resultMap id="filmForTest5" type="Film1" autoMapping="true" extends="filmForTest4">
+        <!-- 因为开启了autoMapping="true",以下映射可以省略-->
+        <!--<result property="rentalRate" column="rental_rate"/>-->
     </resultMap>
 
 

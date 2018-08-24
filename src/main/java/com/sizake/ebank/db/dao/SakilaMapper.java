@@ -43,6 +43,8 @@ public interface SakilaMapper {
     @Results(id = "getFilm", value = {
             //flagging results as ID will help improve overall performance
             // 实际上可能没有用处
+            // 应为目前{3.4.6}版本缺少类似于collection这样的处理一对多映射的注解,且
+            //根据 MapperAnnotationBuilder.applyResults/apperAnnotationBuilder.applyConstructorArgs,在不引入外部resultMap的情况下 MapperBuilderAssistant.buildResultMapping的
             @Result(property = "id", column = "film_id", id = true),
             @Result(property = "cost", column = "replacement_cost"),
             @Result(property = "category.name", column = "name")//无论是哪一种情形，你都可以使用通常的点式分隔形式进行复杂属性导航
@@ -54,13 +56,14 @@ public interface SakilaMapper {
 
 
     @ResultMap("filmForTest")//等同于@ResultMap("com.sizake.ebank.db.dao.SakilaMapper.filmForTest")
-    @Select("select f.film_id,f.title,f.replacement_cost,c.category_id,c.name  from sakila.film f\n" +
+    @Select("select f.film_id,f.title,f.replacement_cost,c.name  from sakila.film f\n" +
             "left join sakila.film_category fc on f.film_id = fc.film_id\n" +
             "left join sakila.category c on c.category_id = fc.category_id")
     List<Film> getFilm1();
 
 
-    @ResultMap("com.sizake.ebank.db.dao.SakilaMapper.filmForTest")
+    @ResultMap("filmForTest")//等同于@ResultMap("com.sizake.ebank.db.dao.SakilaMapper.filmForTest")
+    //@ResultMap("com.sizake.ebank.db.dao.SakilaMapper.filmForTest")
     @Select("select f.film_id,f.title,f.replacement_cost,c.category_id, c.name,a.actor_id,a.first_name,a.last_name,a.last_update  from sakila.film f\n" +
             "left join sakila.film_category fc on f.film_id = fc.film_id\n" +
             "left join sakila.category c on c.category_id = fc.category_id\n" +
@@ -81,5 +84,13 @@ public interface SakilaMapper {
             "left join sakila.film f2 on f2.film_id = fa2.film_id\n" +
             "where f.film_id = 1\n")
     List<Film> getFilm3();//多对多
+
+
+    @ResultMap("filmForTest3")
+    //@ResultMap("filmForTest5")
+    @Select("select f.film_id,f.title,f.replacement_cost,f.rental_rate,f.rental_duration from sakila.film f\n" +
+            "where f.rental_duration in(4)\n" +
+            "and f.film_id in (1,4,13)")
+    List<Film> getFilm4();
 
 }
