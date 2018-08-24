@@ -13,7 +13,7 @@
         id 表示的结果将是对象的标识属性，这会在比较对象实例时用到。
         这样可以提高整体的性能，尤其是缓存和嵌套结果映射(也就是联合映射)的时候。-->
         <!--
-        handleRowValues
+        DefaultResultSetHandler.handleRowValues
         -->
         <id property="id" column="film_id"/>
         <!--<result property="title" column="title"/>&lt;!&ndash;如果要像注解一样可以省略,需要resultMap/association/collection 开启 autoMapping="true",但可能会导致 AutoMappingUnknownColumnBehavior warn 日志{因为} &ndash;&gt;-->
