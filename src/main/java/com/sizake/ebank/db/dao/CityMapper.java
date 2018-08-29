@@ -19,7 +19,7 @@ public interface CityMapper {
 
 
     @Select("select id,name,countryCode,district,population from world.city")
-    @MapKey("id,name")
+    @MapKey("id")
 //-->没有对应的xml配置,且只能是单一主键,如果对应的属性没有找到,则返回的map不符合预期(key=null,value={last-record})且不会报错
 //单一主键;大小写有区别,此处只能用"id",即与查询语句 select id ...... 一致
     Map<String, Map<String, String>> getAllAndReturnListMap();

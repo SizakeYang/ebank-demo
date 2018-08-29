@@ -55,10 +55,12 @@
             <!--<result property="name" column="name"/>-->
         </association>
         <!-- 一对多 -->
-        <!--mybatis-xml 的强大之处,轻松处理 left join 并返回合适的(一对多)对象;注解只能处理一对一的形式(据我所知) -->
+        <!--mybatis-xml 的强大之处,轻松处理 left join 并返回合适的(一对多)对象;注解目前{3.4.6}只能处理一对一的形式(据我所知) -->
         <!--collection处理has-many-->
+        <!--由于notNullColumn,查询出的列必须包含actor_id,first_name-->
+        <!--可以“{actor_id,first_name}”,也可以actor_id,first_name,详情见:MapperBuilderAssistant.parseMultipleColumnNames-->
         <collection property="actors" ofType="Actor"
-                    notNullColumn="actor_id,first_name"><!--由于notNullColumn,查询出的列必须包含actor_id,first_name-->
+                    notNullColumn="{actor_id,first_name}">
             <id property="id" column="actor_id"/>
             <result property="firstName" column="first_name"/>
             <result property="lastNameTest" column="last_name"/>

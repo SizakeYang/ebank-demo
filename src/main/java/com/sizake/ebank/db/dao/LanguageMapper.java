@@ -35,9 +35,9 @@ public interface LanguageMapper extends EbankMapper {
     @Select({"<script>",
             "SELECT * FROM world.countrylanguage l",
             "WHERE 1=1",
-            "<when test='title!=null'>",
+            "<if test='title!=null'>",//test采用ongl解析
             "AND l.CountryCode  = #{country}",
-            "</when>",
+            "</if>",//if-->when,is ok.
             "</script>"})
     List<Map<String, String>> findByScript(Map<String, Object> paramMap);
 
@@ -77,7 +77,7 @@ public interface LanguageMapper extends EbankMapper {
             "       <where>",
             //"<trim prefix=\"WHERE\" prefixOverrides=\"AND |OR \">",
             "           <choose>",
-            "               <when test=\"country != null\">",
+            "               <when test=\"country != null\">",//only when
             "                   AND l.countryCode = #{country}",
             "               </when>",
             "               <when test=\"language != null\">",
