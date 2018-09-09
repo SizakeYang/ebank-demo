@@ -3,12 +3,13 @@ package com.sizake.ebank;
 
 import org.junit.Test;
 import parser.JsonTool;
+import parser.XmlAndJsonTool;
 import parser.XmlTool;
-import parser.XmlTool2;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class SizkeTest {
     @Test
@@ -31,7 +32,7 @@ public class SizkeTest {
 
     @Test
     public void testXmlParser4() throws IOException {
-        String result = XmlTool2.xmlToJson("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+        String result = XmlAndJsonTool.xmlToJson("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                 "<errors>\n" +
                 "  <error>\n" +
                 "    <status>400</status>\n" +
@@ -53,5 +54,10 @@ public class SizkeTest {
         JsonTool.create();
     }
 
+    @Test
+    public void testJsonParser2() throws IOException {
+        Map map = XmlAndJsonTool.jsonToMap("{\"state\":{\"capital\":\"Denver\",\"majorCities\":[\"Denver\",\"Colorado Springs\",\"Fort Collins\"],\"others\":{\"language\":\"english\",\"food\":\"beef\"},\"contacts\":[{\"FirstName\":\"A\",\"LastName\":\"B\"},{\"FirstName\":\"D\",\"LastName\":\"E\"},{\"FirstName\":\"G\",\"LastName\":\"H\"}],\"lists\":[{\"name\":\"sizake\",\"order\":\"1\"},{\"name\":\"kafka\",\"order\":\"2\"}]}}\n");
+        System.out.println(map);
+    }
 
 }
